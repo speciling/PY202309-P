@@ -31,7 +31,8 @@ def get_keywords(articles):
     key_model = KeyBERT('paraphrase-multilingual-MiniLM-L12-v2')
     hannanum = Hannanum()
     keyword_dic = {}
-    stop_words = {"등", "씨", "것", "여성", "혐의", "경찰", "서울", "한국", "긴급", "불쾌", "이탈리", "10대", "20대", "30대", "40대", "50대", "60대", "70대", "80대", "분노", "한", "징역", "제", "남성", "사고", "평균", "대한민국"}
+    stop_words = {"등", "씨", "것", "여성", "혐의", "경찰", "서울", "한국", "긴급", "불쾌", "이탈리", "10대", "20대", "30대",
+                  "40대", "50대", "60대", "70대", "80대", "분노", "한", "징역", "제", "남성", "사고", "평균", "대한민국"}
     keywords = [key_model.extract_keywords(article, keyphrase_ngram_range=(1,2), top_n=2) for article in articles]
     keywords = [k[0][0] + ' ' + k[1][0] for k in keywords]
     for i, summary in enumerate(keywords):
@@ -59,7 +60,6 @@ def summerize_article(file_name, processed_file):
         return df, keyword_dic
     df = pd.read_csv(file_name, sep='\t')
     df['기사요약'] = get_summarize(df['기사본문'])
-    print(1)
     df['키워드'], keywords_dict = get_keywords(df['기사본문'])
     df.to_csv(processed_file, index=False, sep="\t")
     return df, keywords_dict
